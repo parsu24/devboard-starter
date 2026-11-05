@@ -8,8 +8,8 @@ metadata:
     app: devboard-postgres
 
 spec:
-  replicas: 2
-  serviceName: postgres-service
+  replicas: 1
+  serviceName: postgres
 
   selector:
     matchLabels:
@@ -54,7 +54,14 @@ spec:
                 configMapKeyRef:
                   name: devboard-configmap
                   key: POSTGRES_DB
-
+          readinessProbe:
+            exec:
+              command:
+                - /bin/sh
+                - -c
+                - pg_isready -U "$POSTGRES_USER" -d "$POSTGRES_DB"
+            initialDelaySeconds: 10
+            periodSeconds: 10
       volumes:
         - name: init
           configMap:
@@ -69,5 +76,5 @@ spec:
         storageClassName: manual
         resources:
           requests:
-            storage: 1Gi
+            storage: 0.5Gi
 

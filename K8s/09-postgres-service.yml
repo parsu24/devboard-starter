@@ -1,13 +1,13 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: postgres-service
+  name: postgres
   namespace: devboard-ns
 
 spec:
   clusterIP: None
   selector:
-    app: postgres-devboard
+    app: devboard-postgres
 
   ports:
     - protocol: TCP
